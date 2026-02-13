@@ -8,8 +8,9 @@ import Image from "next/image";
 
 export default async function HomePage() {
   const perfumes = await getProductsByCategorySlug("valentines-day-deals");
-  const testers = await getProductsByCategorySlug("testers");
-
+  const WomenArmaf = await getProductsByCategorySlug("women-armaf-deals");
+  const ArmafDeals = await getProductsByCategorySlug("armaf-deals");
+  console.log("Perfumes:", perfumes);
   return (
     <div className="">
       <Header />
@@ -23,15 +24,19 @@ export default async function HomePage() {
         />
       </div>
 
-      <ProductSlider title="Perfumes Collection" products={perfumes} />
-      <ProductSlider title="Perfumes Collection" products={testers} />
+      <ProductSlider title="Best Sellers" products={perfumes} />
+      <ProductSlider title="Featured Products" products={WomenArmaf} />
+      <div className="relative mt-[35px] w-full aspect-[1920/250]">
+        <Image
+          src="/excellence-banner.png"
+          alt="Perfume Collection"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
-      {/* Banner */}
-      <img
-        className="w-full object-cover"
-        alt="Excellence banner"
-        src="https://c.animaapp.com/mlaoauv707OLn2/img/excellence-banner.png"
-      />
+      <ProductSlider title="New Arrivals" products={ArmafDeals} />
 
       {/* Featured Brands */}
       <section className="w-full">
@@ -62,7 +67,7 @@ export default async function HomePage() {
                 <img
                   src={`https://c.animaapp.com/mlaoauv707OLn2/img/${img}`}
                   alt="Brand"
-                  className="max-h-[80px] object-contain"
+                  className="max-h-[170px] object-contain"
                 />
               </div>
             ))}

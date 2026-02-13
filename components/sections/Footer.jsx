@@ -32,9 +32,9 @@ export const Footer = () => {
       <div className="border-t border-gray-300 my-14 max-w-6xl mx-auto" />
 
       {/* Main Footer Grid */}
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row gap-12">
         {/* About */}
-        <div>
+        <div className="flex-1">
           <p className="text-lg">
             If you're interested in knowing more about our online store or have
             any questions please get in touch with us by email or by dialing our
@@ -49,7 +49,7 @@ export const Footer = () => {
         </div>
 
         {/* Categories */}
-        <div>
+        <div className="flex-1">
           <h3 className="font-semibold text-xl mb-6">Categories</h3>
           <ul className="space-y-4 text-lg">
             <li>Shop</li>
@@ -62,7 +62,7 @@ export const Footer = () => {
         </div>
 
         {/* Company */}
-        <div>
+        <div className="flex-1">
           <h3 className="font-semibold text-xl mb-6">Perfume International</h3>
           <ul className="space-y-4 text-lg">
             <li>About Us</li>
@@ -73,7 +73,7 @@ export const Footer = () => {
         </div>
 
         {/* Contact */}
-        <div>
+        <div className="flex-1">
           <h3 className="font-semibold text-xl mb-6">Contact Us</h3>
 
           <p className="text-lg mb-4">713-532-7373</p>

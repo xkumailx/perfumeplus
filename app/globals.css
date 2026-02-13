@@ -137,3 +137,34 @@
     transform: translateY(calc(-100% - var(--gap)));
   }
 }
+body .slick-arrow {
+  display: block;
+  position: absolute !important;
+  top: 110%;
+  background: #c39617;
+  height: 35px;
+  width: 35px;
+  background-position: center center !important;
+  background-size: auto !important;
+  background-repeat: no-repeat !important;
+  transition: 0.3s;
+}
+
+body .slick-arrow:hover {
+  background-color: #946c00;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: auto !important;
+}
+body .slick-arrow::before {
+  display: none;
+}
+body .slick-arrow.slick-next {
+  left: 98%;
+  background-image: url(../public/right-arrow.png);
+}
+
+body .slick-arrow.slick-prev {
+  left: 94%;
+  background-image: url(../public/left-arrow.png);
+}
