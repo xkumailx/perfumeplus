@@ -1,7 +1,8 @@
 import { getProducts } from "../../lib/woocommerce";
 import { Header } from "../../components/sections/Header";
 import { Footer } from "../../components/sections/Footer";
-import Link from "next/link";
+// import Link from "next/link";
+import { ProductCard } from "../../components/products/ProductCard";
 
 export const metadata = {
   title: "Shop All Products - Perfumes Plus International",
@@ -18,7 +19,7 @@ export default async function ShopPage() {
     <div className="bg-white min-h-screen">
       <Header />
 
-      <div className="max-w-[1640px] mx-auto px-4 py-12">
+      {/* <div className="max-w-[1640px] mx-auto px-4 py-12">
         <h1 className="font-semibold text-black text-[40px] text-center mb-12">
           SHOP ALL PRODUCTS
         </h1>
@@ -74,6 +75,11 @@ export default async function ShopPage() {
             <p className="text-secondary text-xl">No products found.</p>
           </div>
         )}
+      </div> */}
+      <div className="flex flex-col gap-4 md:grid md:grid-cols-4 max-w-[1400px] mx-auto">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
 
       <Footer />

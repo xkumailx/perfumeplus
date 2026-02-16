@@ -1,7 +1,7 @@
 import { Header } from "../components/sections/Header";
 import { ReviewsFromOur } from "../components/sections/ReviewsFromOur";
 import { LatestFromOurBlog } from "../components/sections/LatestFromOurBlog";
-import { ProductSlider } from "../components/sections/ProductSlider";
+import { ProductSlider } from "../components/products/ProductSlider";
 import { Footer } from "../components/sections/Footer";
 import { getProductsByCategorySlug } from "../lib/woocommerce";
 import Image from "next/image";
