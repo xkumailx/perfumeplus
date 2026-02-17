@@ -9,7 +9,9 @@ import ProductClient from "../../../components//sections/ProductClient";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const product = await getProductBySlug(params.slug);
+  const { slug } = await params;
+
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return { title: "Product Not Found" };
@@ -26,7 +28,9 @@ export async function generateMetadata({ params }) {
 export const revalidate = 3600;
 
 export default async function ProductPage({ params }) {
-  const product = await getProductBySlug(params.slug);
+  const { slug } = await params; // unwrap once
+
+  const product = await getProductBySlug(slug); // use slug
   if (!product) notFound();
 
   const relatedProducts = product.categories?.[0]?.id
