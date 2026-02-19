@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { decodeHTML } from "../../lib/woocommerce";
+import { ProductCard } from "../products/ProductCard";
 
 export default function ProductClient({ product, relatedProducts }) {
   const [activeImg, setActiveImg] = useState(
@@ -132,18 +133,19 @@ export default function ProductClient({ product, relatedProducts }) {
 
           <div className="grid md:grid-cols-4 gap-6">
             {relatedProducts.map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`}>
-                <div className="border p-4 hover:shadow-lg">
-                  <img
-                    src={p.images?.[0]?.src || "/placeholder.png"}
-                    className="aspect-square object-cover mb-4"
-                  />
-                  <div className="text-sm text-[#c39617]">
-                    {p.categories?.[0]?.name}
-                  </div>
-                  <div className="font-semibold">{p.name}</div>
-                </div>
-              </Link>
+              // <Link key={p.id} href={`/product/${p.slug}`}>
+              //   <div className="border p-4 hover:shadow-lg">
+              //     <img
+              //       src={p.images?.[0]?.src || "/placeholder.png"}
+              //       className="aspect-square object-cover mb-4"
+              //     />
+              //     <div className="text-sm text-[#c39617]">
+              //       {p.categories?.[0]?.name}
+              //     </div>
+              //     <div className="font-semibold">{p.name}</div>
+              //   </div>
+              // </Link>
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </>

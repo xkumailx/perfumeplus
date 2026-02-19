@@ -141,7 +141,7 @@ body .slick-arrow {
   display: block;
   position: absolute !important;
   top: 110%;
-  background: #c39617;
+  background-color: #c39617 !important;
   height: 35px;
   width: 35px;
   background-position: center center !important;

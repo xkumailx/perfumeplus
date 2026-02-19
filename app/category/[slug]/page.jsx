@@ -1,40 +1,53 @@
-import { getCategoryBySlug, getProductsByCategory } from '../../../lib/woocommerce'
-import { Header } from '../../../components/sections/Header'
-import { Footer } from '../../../components/sections/Footer'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import {
+  getCategoryBySlug,
+  getProductsByCategory,
+  getProductsPaginated,
+} from "../../../lib/woocommerce";
+import { Header } from "../../../components/sections/Header";
+import { Footer } from "../../../components/sections/Footer";
+import { ProductCard } from "../../../components/products/ProductCard";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const category = await getCategoryBySlug(params.slug)
-  
+  const { slug } = await params; // unwrap params
+
+  const category = await getCategoryBySlug(slug);
+
   if (!category) {
-    return {
-      title: 'Category Not Found',
-    }
+    return { title: "Category Not Found" };
   }
 
   return {
     title: `${category.name} - Perfumes Plus International`,
-    description: category.description?.replace(/<[^>]*>/g, '') || `Shop ${category.name} fragrances`,
-  }
+    description:
+      category.description?.replace(/<[^>]*>/g, "") ||
+      `Shop ${category.name} fragrances`,
+  };
 }
 
-export const revalidate = 3600
+export const revalidate = 3600;
 
-export default async function CategoryPage({ params }) {
-  const category = await getCategoryBySlug(params.slug)
+export default async function CategoryPage({ params, searchParams }) {
+  const { slug } = await params; // ✅ unwrap params
+  const sp = await searchParams; // ✅ unwrap searchParams
+  const page = Number(sp?.page || 1); // use unwrapped value
 
-  if (!category) {
-    notFound()
-  }
+  const category = await getCategoryBySlug(slug);
+  if (!category) notFound();
 
-  const products = await getProductsByCategory(category.id, { per_page: 24 })
+  const { products, totalPages } = await getProductsPaginated(category.id, {
+    page,
+    per_page: 24,
+  });
+  console.log("Category:", category);
+  console.log("Slug:", slug);
 
   return (
     <div className="bg-white min-h-screen">
       <Header />
 
-      <div className="max-w-[1640px] mx-auto px-4 py-12">
+      <div className="max-w-[1400px] mx-auto px-4 py-12">
         <h1 className="font-semibold text-black text-[40px] text-center mb-4">
           {category.name.toUpperCase()}
         </h1>
@@ -49,57 +62,102 @@ export default async function CategoryPage({ params }) {
         {products.length > 0 ? (
           <div className="grid grid-cols-4 gap-4">
             {products.map((product) => (
-              <Link
-                key={product.id}
-                href={`/product/${product.slug}`}
-                className="block bg-white border border-solid border-[#c5c5c5] hover:shadow-lg transition-shadow"
-              >
-                <div className="relative w-full aspect-square">
-                  <img
-                    src={product.images?.[0]?.src || '/placeholder.png'}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div className="p-6 text-center">
-                  <div className="font-medium text-[#c39617] text-lg mb-2">
-                    {product.categories?.[0]?.name || 'Brand'}
-                  </div>
-
-                  <h3 className="font-normal text-black text-xl mb-4 line-clamp-2 min-h-[56px]">
-                    {product.name}
-                  </h3>
-
-                  <div className="flex items-center justify-center gap-3">
-                    {product.regular_price && product.sale_price ? (
-                      <>
-                        <span className="font-normal text-[#767676] text-lg line-through">
-                          ${product.regular_price}
-                        </span>
-                        <span className="font-medium text-black text-lg">
-                          ${product.sale_price}
-                        </span>
-                      </>
-                    ) : (
-                      <div
-                        className="font-medium text-black text-lg"
-                        dangerouslySetInnerHTML={{ __html: product.price_html }}
-                      />
-                    )}
-                  </div>
-                </div>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-secondary text-xl">No products found in this category.</p>
+            <p className="text-secondary text-xl">
+              No products found in this category.
+            </p>
+          </div>
+        )}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-2 mt-12 flex-wrap items-center">
+            {/* PREV */}
+            {page > 1 && (
+              <Link
+                href={`/category/${slug}?page=${page - 1}`}
+                className="px-4 py-2 border"
+              >
+                Prev
+              </Link>
+            )}
+
+            {/* PAGE NUMBERS */}
+            {(() => {
+              const pages = [];
+              const delta = 2; // pages before & after current
+
+              const start = Math.max(1, page - delta);
+              const end = Math.min(totalPages, page + delta);
+
+              // First page
+              if (start > 1) {
+                pages.push(
+                  <Link
+                    key={1}
+                    href={`/category/${slug}?page=1`}
+                    className="px-4 py-2 border"
+                  >
+                    1
+                  </Link>,
+                );
+
+                if (start > 2) {
+                  pages.push(<span key="start-ellipsis">...</span>);
+                }
+              }
+
+              // Middle pages
+              for (let i = start; i <= end; i++) {
+                pages.push(
+                  <Link
+                    key={i}
+                    href={`/category/${slug}?page=${i}`}
+                    className={`px-4 py-2 border ${
+                      i === page ? "bg-black text-white" : "hover:bg-gray-100"
+                    }`}
+                  >
+                    {i}
+                  </Link>,
+                );
+              }
+
+              // Last page
+              if (end < totalPages) {
+                if (end < totalPages - 1) {
+                  pages.push(<span key="end-ellipsis">...</span>);
+                }
+
+                pages.push(
+                  <Link
+                    key={totalPages}
+                    href={`/category/${slug}?page=${totalPages}`}
+                    className="px-4 py-2 border"
+                  >
+                    {totalPages}
+                  </Link>,
+                );
+              }
+
+              return pages;
+            })()}
+
+            {/* NEXT */}
+            {page < totalPages && (
+              <Link
+                href={`/category/${slug}?page=${page + 1}`}
+                className="px-4 py-2 border"
+              >
+                Next
+              </Link>
+            )}
           </div>
         )}
       </div>
 
       <Footer />
     </div>
-  )
+  );
 }

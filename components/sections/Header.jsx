@@ -92,8 +92,15 @@ export const Header = () => {
             <Link href="/shop" className="hover:text-[#c39617]">
               Shop
             </Link>
-            <span className="hover:text-[#c39617] cursor-pointer">Men</span>
-            <span className="hover:text-[#c39617] cursor-pointer">Women</span>
+            <Link
+              href="/category/afnan-perfume-men"
+              className="hover:text-[#c39617]"
+            >
+              Men
+            </Link>
+            <Link href="/category/women" className="hover:text-[#c39617]">
+              Women
+            </Link>
             <span className="hover:text-[#c39617] cursor-pointer">
               Gift Sets
             </span>

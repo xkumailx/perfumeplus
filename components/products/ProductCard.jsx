@@ -3,10 +3,15 @@ import Image from "next/image";
 import { decodeHTML } from "../../lib/woocommerce"; // since you already made this
 
 export const ProductCard = ({ product }) => {
-  const regularPrice = parseFloat(product.regular_price);
-  const salePrice = parseFloat(product.sale_price);
+  const regularPrice = Number(product.regular_price || 0);
+  const salePrice = Number(product.sale_price || 0);
 
-  const isOnSale = salePrice && regularPrice && salePrice < regularPrice;
+  const isOnSale =
+    regularPrice > 0 && salePrice > 0 && salePrice < regularPrice;
+
+  const discountPercent = isOnSale
+    ? Math.round(((regularPrice - salePrice) / regularPrice) * 100)
+    : 0;
 
   return (
     <Link
@@ -14,6 +19,12 @@ export const ProductCard = ({ product }) => {
       className="block bg-white border border-gray-200 hover:shadow-lg transition"
     >
       <div className="relative w-full aspect-square">
+        {/*SALE BADGE */}
+        {isOnSale && (
+          <div className="absolute top-2 left-2 bg-[#c39617] text-white text-xs font-bold px-2 py-1 rounded z-10">
+            -{discountPercent}%
+          </div>
+        )}
         <Image
           src={product.images?.[0]?.src || "/placeholder.png"}
           alt={decodeHTML(product.name)}
