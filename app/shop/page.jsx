@@ -1,8 +1,14 @@
-import { getProducts, getProductsPaginated } from "../../lib/woocommerce";
+import {
+  getProducts,
+  getProductsPaginated,
+  getProductCategories,
+} from "../../lib/woocommerce";
 import { Header } from "../../components/sections/Header";
 import { Footer } from "../../components/sections/Footer";
 import Link from "next/link";
 import { ProductCard } from "../../components/products/ProductCard";
+import FilterSidebar from "../../components/FilterSidebar";
+import ProductSearch from "../../components/ProductSearch";
 
 export const metadata = {
   title: "Shop All Products - Perfumes Plus International",
@@ -15,18 +21,52 @@ export const revalidate = 3600; // Revalidate every hour
 export default async function ShopPage({ searchParams }) {
   const sp = await searchParams;
   const page = Number(sp?.page || 1);
-  const { products, totalPages } = await getProductsPaginated(undefined, {
+  const minPrice = sp?.min;
+  const maxPrice = sp?.max;
+  const brandId = sp?.brand;
+  const categoryId = sp?.category;
+
+  // products
+  const { products, totalPages } = await getProductsPaginated(categoryId, {
     page,
-    // per_page: 24,
+    minPrice,
+    maxPrice,
+    brandId,
   });
+
+  // categories + brands
+  const allCats = await getProductCategories();
+  const brandParent = allCats.find((c) => c.slug === "brands");
+
+  const brands = brandParent
+    ? allCats.filter((c) => c.parent === brandParent.id)
+    : [];
+
+  // send ALL categories except brands tree
+  const categories = allCats.filter(
+    (c) => c.id !== brandParent?.id && c.parent !== brandParent?.id,
+  );
 
   return (
     <div className=" bg-white min-h-screen">
       <Header />
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-4 max-w-[1400px] mx-auto mt-12">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <div className="max-w-[1400px] mx-auto mt-12 flex flex-col lg:flex-row gap-6">
+        {/* Sidebar */}
+        <div className="lg:w-[30%] xl:w-[25%] w-full">
+          <ProductSearch />
+          <FilterSidebar
+            categories={categories}
+            brands={brands}
+            searchParams={sp}
+          />
+        </div>
+
+        {/* Products */}
+        <div className="lg:w-[70%] xl:w-[75%] w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-12 flex-wrap max-w-[1400px] mx-auto items-center mb-12">

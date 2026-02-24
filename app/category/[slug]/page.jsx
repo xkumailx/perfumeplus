@@ -6,6 +6,7 @@ import {
 import { Header } from "../../../components/sections/Header";
 import { Footer } from "../../../components/sections/Footer";
 import { ProductCard } from "../../../components/products/ProductCard";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
