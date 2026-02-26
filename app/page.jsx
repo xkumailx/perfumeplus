@@ -1,5 +1,5 @@
 import { Header } from "../components/sections/Header";
-import { ReviewsFromOur } from "../components/sections/ReviewsFromOur";
+// import { ReviewsFromOur } from "../components/sections/ReviewsFromOur";
 import { LatestFromOurBlog } from "../components/sections/LatestFromOurBlog";
 import { ProductSlider } from "../components/products/ProductSlider";
 import { Footer } from "../components/sections/Footer";
@@ -75,7 +75,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <ReviewsFromOur />
+      {/* <ReviewsFromOur /> */}
       <LatestFromOurBlog />
       <Footer />
     </div>

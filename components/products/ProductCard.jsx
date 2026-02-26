@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { decodeHTML } from "../../lib/woocommerce"; // since you already made this
@@ -35,10 +36,10 @@ export const ProductCard = ({ product }) => {
 
       <div className="p-4 text-center">
         {/* CATEGORY NAME */}
-        <p className="text-xs uppercase text-[#C39617] mb-2">
+        {/* <p className="text-xs uppercase text-[#C39617] mb-2">
           {product.categories?.map((cat) => decodeHTML(cat.name))?.join(", ") ||
             "Category"}
-        </p>
+        </p> */}
 
         {/* PRODUCT NAME */}
         <h3 className="text-sm min-h-[48px]">{decodeHTML(product.name)}</h3>
@@ -55,6 +56,19 @@ export const ProductCard = ({ product }) => {
           ) : (
             <span className="font-semibold">${product.price}</span>
           )}
+        </div>
+        {/* ADD TO CART BUTTON */}
+        <div className="px-4 pb-4 mt-4">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleAddToCart(product);
+            }}
+            className="w-full bg-[#c39617] text-white text-sm font-semibold py-2 rounded hover:opacity-90 transition"
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </Link>

@@ -93,7 +93,7 @@ export const Header = () => {
               Shop
             </Link>
             <Link
-              href="/category/afnan-perfume-men"
+              href="/category/men-armaf-deals"
               className="hover:text-[#c39617]"
             >
               Men
@@ -101,11 +101,15 @@ export const Header = () => {
             <Link href="/category/women" className="hover:text-[#c39617]">
               Women
             </Link>
-            <span className="hover:text-[#c39617] cursor-pointer">
+            <Link href="/category/giftsets" className="hover:text-[#c39617]">
               Gift Sets
-            </span>
-            <span className="hover:text-[#c39617] cursor-pointer">Kids</span>
-            <span className="hover:text-[#c39617] cursor-pointer">Brands</span>
+            </Link>
+            <Link href="/category/kids" className="hover:text-[#c39617]">
+              Kids
+            </Link>
+            <Link href="/brands" className="hover:text-[#c39617]">
+              Brands
+            </Link>
           </div>
 
           <div className="flex gap-8">
