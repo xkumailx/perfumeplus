@@ -113,8 +113,12 @@ export const Header = () => {
           </div>
 
           <div className="flex gap-8">
-            <span>About Us</span>
-            <span>Contact Us</span>
+            <Link href="/about-us" className="hover:text-[#c39617]">
+              About Us
+            </Link>
+            <Link href="/contact-us" className="hover:text-[#c39617]">
+              Contact Us
+            </Link>
             <span>Blog</span>
             <span>Track Order</span>
           </div>
